@@ -2,41 +2,23 @@
 outline: deep
 ---
 
-# Revue du code de Hugo par Jérémy
-
+# Revu du code de Hugo Larochelle.
 
 ## Le code
 
+### Lisibilité et clarté du code.
 
-### Lisibilité
-Bonne lisibilité, good job Hugo!
-
-### respect des bonnes pratiques de programmation
-
-:::warning
-Dans App.vue la constante **songId** n'est pas utilisé,
-elle devrait être enlevé.
+::: warning
+Noublie pas d'enlever le code temporaire en commentaire Actions.vue quand tu n'en à plus besoins.
 :::
 
-:::tip
-Tu pourrais utiliser un object song et un objet artiste pour transporter leurs informations dans les vues au lieu de créer une variable pour chaque informations et passée l'informations à ceux qui en on besoin. Parce que App.vue ne devrait pas savoir ce que ses sous-composant on besoins.
-:::
+### Respect des normes et standards de programmation.
 
-### respect des normes et standards de programmation
-
-Bon respect des normes et standards de programmation.
-
-:::details
-Toute tes variables et fonctions sont en camelCase et le nom des composant en PascalCase. Le nom des variables, des fonctions et des composants sont significatifs. Le code est unilangue. L'affichage et les commentaires sont en français.
-:::
+Bonne utilisation des composants pour séprarer ta vue.
 
 
-## Autres
+## Autre
 
-### Optimisation
-Tes fonctions sont simples et bien optimisé good job !
+### Suggestion
 
-### Clarté pour utilisateurs
-:::warning
-Il n'y a pas de message d'avertissement lorsque le site n'est pas capable d'accéder à la bd ou lorsque l'utilisateur essaye de jouer une chanson, mais qu'aucune n'est sélectionné.
-:::
+Tu pourrait rajouter un background dans le jeu pour que ce ne soit pas juste un fond blanc.
