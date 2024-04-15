@@ -2,27 +2,25 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "TP2 code review",
-  description: "Revue de code de Hugo Larochelle et Jeremy Devloo",
+  title: "Revue de code TP2",
+  description: "Revue de code du TP2 documentée de Hugo Larochelle et Jeremy Devloo",
+  base: "/appweb_trpr02/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Revue Hugo', link: '/hugo-larochelle' },
+      { text: 'Revu Jérémy', link: '/jeremy-devloo' }
     ],
 
     sidebar: [
       {
         text: 'Examples',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: 'Revue Hugo', link: '/hugo-larochelle' },
+          { text: 'Revu Jérémy', link: '/jeremy-devloo' }
         ]
       }
-    ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
     ]
   }
 })
