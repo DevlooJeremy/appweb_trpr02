@@ -2,8 +2,8 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Revue de code TP2",
-  description: "Revue de code du TP2 de Hugo Larochelle et Jeremy Devloo",
+  title: "TP2 code review",
+  description: "Revue de code de Hugo Larochelle et Jeremy Devloo",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
