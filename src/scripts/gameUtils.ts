@@ -1,0 +1,1 @@
+export enum PlayerActions {FIGHT, RETREAT, REPARE}
