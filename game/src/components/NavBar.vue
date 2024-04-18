@@ -21,7 +21,7 @@
 
 <style>
 .button-color {
-    background-color: gray;
+    background-color: grey;
 }
 
 .size {

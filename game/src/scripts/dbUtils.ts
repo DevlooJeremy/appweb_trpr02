@@ -15,7 +15,7 @@ export async function getCharacters() {
     return data;
 }
 
-export async function getRanking() {
+export async function getRankings() {
     const {data} = await axios.get(URL + RANKING_ROUTE);
     return data;
 }
