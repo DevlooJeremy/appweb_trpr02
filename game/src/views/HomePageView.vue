@@ -1,21 +1,11 @@
 <script setup lang="ts">
 
-import {ref, onMounted} from 'vue'
-import {getShips} from '../scripts/dbUtils'
-
-
-const ships: any = ref<[]>([]);
-
-onMounted(() => {
-    getShips().then((data) => {
-        ships.value = data;
-    });
-});
+import HomePage from '@/components/HomePage.vue';
 
 </script>
 
 <template>
-
+    <HomePage/>
 </template>
 
 <style>
