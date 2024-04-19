@@ -16,7 +16,15 @@ onMounted(() => {
 });
 
 function onSubmit() {
-    router.push({ path: 'game', query: {playerName: playerName.value, ship: playerShip.value}});
+    if (isNotBlank(playerName.value) && isNotBlank(playerShip.value))
+    {
+        router.push({ path: 'game', query: {playerName: playerName.value, ship: playerShip.value}});
+    }
+}
+
+function isNotBlank(value: string): boolean {
+    if (value === undefined) return false;
+    return value.trim() !== "";
 }
 
 </script>
@@ -24,8 +32,8 @@ function onSubmit() {
 <template>
     <main class="homepage-size d-flex justify-content-center align-items-center">
         
-        <div>
-            <form class="">
+        <div class="border border-1 border-dark form-height">
+            <form class="m-4">
                 <div class="mb-3">
                     <label for="playerName" class="form-label">Nom du joueur</label>
                     <input class="form-control" type="text" v-model="playerName" name="playerName" id="playerName" placeholder="Nom du joueur">
@@ -45,5 +53,9 @@ function onSubmit() {
 <style>
 .homepage-size {
     height: 850px;
+}
+
+.form-height {
+    margin-bottom: 4em;
 }
 </style>
