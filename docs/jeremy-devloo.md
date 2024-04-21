@@ -2,23 +2,87 @@
 outline: deep
 ---
 
-# Revu du code de Hugo Larochelle.
+# Revue du code de Hugo Larochelle pour la semaine du 15 au 21.
 
-## Le code
+## Qualité du code 
 
-### Lisibilité et clarté du code.
+### Lisibilité du code
 
-::: warning
-Noublie pas d'enlever le code temporaire en commentaire Actions.vue quand tu n'en à plus besoins.
+La fonction fight de GameView est assée chargé tu pourrait séparer les deux switch case en deux fonction différente.
+
+::: details
+```ts
+function fight() {
+    playerAttack();
+    enemyAttack();
+}
+
+function playerAttack() {
+    let playerAttack: number = getRndNbr(0, 100);
+    switch (playerRank.value) {
+        case Ranks.BEGINER:
+            if (playerAttack < 20) {
+                damageEnemy()
+            }
+            break;
+        case Ranks.CONFIRMED:
+            if (playerAttack < 35) {
+                damageEnemy()
+            }
+            break;
+        case Ranks.EXPERT:
+            if (playerAttack < 50) {
+                damageEnemy()
+            }
+            break;
+        case Ranks.MASTER:
+            if (playerAttack < 70) {
+                damageEnemy()
+            }
+            break;
+    
+        default:
+            break;
+    }
+}
+
+function enemyAttack() {
+    let enemyAttack: number = getRndNbr(0, 100);
+    switch (enemyRank.value) {
+        case Ranks.BEGINER:
+            if (enemyAttack < 20) {
+                damagePlayer()
+            }
+            break;
+        case Ranks.CONFIRMED:
+            if (enemyAttack < 35) {
+                damagePlayer()
+            }
+            break;
+        case Ranks.EXPERT:
+            if (enemyAttack < 50) {
+                damagePlayer()
+            }
+            break;
+        case Ranks.MASTER:
+            if (enemyAttack < 70) {
+                damagePlayer()
+            }
+            break;
+    
+        default:
+            break;
+    }
+}
+```
 :::
 
-### Respect des normes et standards de programmation.
+### Respect des bonnes pratiques de programmation
 
-Bonne utilisation des composants pour séprarer ta vue.
+::: Warning
+N'oublie pas d'enlever tes console.log dans Enemy quand tu n'en a plus besoin.
+:::
 
+### Respect des normes et standards de programmation
 
-## Autre
-
-### Suggestion
-
-Tu pourrait rajouter un background dans le jeu pour que ce ne soit pas juste un fond blanc.
+Bon respect des normes et standards Good job !
