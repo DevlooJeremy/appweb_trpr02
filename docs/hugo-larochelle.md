@@ -6,35 +6,7 @@ Ceci est la revue de code du tp1 de Jérémy Devloo, fait par Hugo Larochelle.
 
 ### Lisibilité et clarté
 
-::: warning
-Certaines variables sont déclarées sans leur type précisé.
-
-*Voir code plus bas*
-:::
-
-```js{1,2,5,6,10,12,13,15,16}
-let formattedCurrentTime = '00:00';
-let formattedDuration = '00:00';
-
-watch(() => props.currentTime, (newValue, oldValue) => {
-  formattedCurrentTime = formatTime(newValue);
-  formattedDuration = formatTime(props.duration);
-})
-
-function formatTime(time: string): string {
-  const totalSeconds = parseInt(time, 10);
-
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-
-  const formattedMinutes = String(minutes).padStart(2, '0');
-  const formattedSeconds = String(seconds).padStart(2, '0');
-
-  return `${formattedMinutes}:${formattedSeconds}`;
-}
-```
-
-Pour le reste, bon travail!
+Je ne trouve rien à changer dans le code à propos de sa clarté.
 
 ::: details
 Le code est bien séparé en différentes parties ayant chacune leur utilité précise. L'indentation et les espacements sont réguliers et permet une bonne lisibilité.
@@ -44,7 +16,35 @@ Les noms des composantes ainsi que ceux des fonctions et des variables sont clai
 
 ### Bonnes pratiques
 
-Tout semble bon, sauf ce qui à déjà été dit.
+Une fonction dans le composant *NavBar* est vide et inutilisé
+
+```js{5,6}
+// src/components/NavBar.vue
+<script setup lang="ts">
+    import {RouterLink} from 'vue-router'
+
+    function goToGame() {
+    }
+</script>
+```
+
+Deux *imports* inutiles.
+
+```js{5,6}
+// src/components/NavBar.vue
+<script setup lang="ts">
+import {ref, onMounted} from 'vue'
+import {getShips} from '../scripts/dbUtils'
+import {} from 'vue-router';
+import { RouterLink } from 'vue-router';
+import router from '@/router';
+
+...
+
+</script>
+```
+
+Pour le reste la quantité de code est gardé à son minimum (pas de fonctions trop longues).
 
 ### Normes et standards
 
@@ -52,16 +52,8 @@ Les normes et standards sont bien respectés. Bravo!
 
 ## Tests
 
-***Ignoré***
+***Encore non présent***
 
 ## Autres
 
-::: warning
-Le code contient un nombre très élevé de fonctions qui pourraient être réduit en quelques fonctions plus longues, mais plus simple.
-:::
-
-Le reste es bon.
-
-```js
-//Exemple
-```
+Le reste est bon.

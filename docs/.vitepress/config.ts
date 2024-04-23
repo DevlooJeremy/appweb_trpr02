@@ -9,15 +9,16 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Revue de Hugo', link: '/hugo-larochelle' },
+      { text: 'Revue de Jérémy', link: '/jeremy-devloo' }
     ],
 
     sidebar: [
       {
-        text: 'Examples',
+        text: 'Pages',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: 'Revue de Hugo', link: '/hugo-larochelle' },
+          { text: 'Revue de Jérémy', link: '/jeremy-devloo' }
         ]
       }
     ],
