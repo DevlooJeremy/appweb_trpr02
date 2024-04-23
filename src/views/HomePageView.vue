@@ -3,6 +3,7 @@
 import {ref, onMounted} from 'vue'
 import axios from 'axios'
 import {getShips} from '../scripts/dbUtils'
+import HomePage from '@/components/HomePage.vue';
 
 
 const ships: any = ref<[]>([]);
@@ -13,10 +14,11 @@ onMounted(() => {
     });
 });
 
+
 </script>
 
 <template>
-
+    <HomePage/>
 </template>
 
 <style>

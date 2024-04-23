@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import Score from '../components/Score.vue'
 
 </script>
 
 <template>
-test
+    <Score/>
 </template>
 
 <style>

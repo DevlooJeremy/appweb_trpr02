@@ -79,7 +79,7 @@ function enemyAttack() {
 
 ### Respect des bonnes pratiques de programmation
 
-::: Warning
+::: warning
 N'oublie pas d'enlever tes console.log dans Enemy quand tu n'en a plus besoin.
 :::
 
