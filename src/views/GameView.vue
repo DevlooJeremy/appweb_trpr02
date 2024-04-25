@@ -7,15 +7,13 @@ import Mission from "../components/Mission.vue";
 import Ship from "../components/Ship.vue";
 import Enemy from "../components/Enemy.vue";
 import { getCharacters } from '@/scripts/dbUtils';
-
-const props = defineProps({
-  playerName: String,
-  shipName: String
-})
+import router from '@/router';
 
 const currentMission = ref<number>(1)
 
 //Statistiques du joueur:
+const playerName = ref<string>("Anonyme")
+const playerShip = ref<string>("Poubelle volante")
 const playerRank = ref<number>(4)
 const playerScore = ref<number>(0)
 const playerVitality = ref<number>(100)
@@ -30,6 +28,13 @@ const enemyVitality = ref<number>(100)
 const enemyMaxVitality = ref<number>(100)
 
 let enemyIsAlive: boolean;
+
+if (router.currentRoute.value.query.playerName != null) {
+    playerName.value = router.currentRoute.value.query.playerName as string
+}
+if (router.currentRoute.value.query.ship != null) {
+    playerShip.value = router.currentRoute.value.query.ship as string
+}
 
 chooseEnemy()
 
@@ -155,7 +160,6 @@ function chooseEnemy() {
     getCharacters().then(function (response){
         let nbrOfEnemy:number = response.length
         let chosenEnemy:number = Math.floor(getRndNbr(0, nbrOfEnemy))
-        console.log(response)
         enemyName.value = response[chosenEnemy].name
         enemyShip.value = response[chosenEnemy].ship.name
         enemyRank.value = response[chosenEnemy].experience
@@ -183,7 +187,7 @@ function finishAndLoose(){
             <Mission :currentMission="currentMission" class="col-5"/>
         </div>
         <div class="row">
-            <Ship :playerName="props.playerName" :shipName="props.shipName" :vitality="playerVitality" :maxVitality="playerMaxVitality" :score="playerScore" class="col-5"/>
+            <Ship :playerName="playerName" :shipName="playerShip" :vitality="playerVitality" :maxVitality="playerMaxVitality" :score="playerScore" class="col-5"/>
             <Enemy class="col-5" :name="enemyName" :shipName="enemyShip" :rank="enemyRank" :score="enemyScore" :vitality="enemyVitality" :maxVitality="enemyMaxVitality"/>
         </div>
     </div>

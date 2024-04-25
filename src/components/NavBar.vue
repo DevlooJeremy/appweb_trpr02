@@ -1,22 +1,50 @@
 <script setup lang="ts">
-    import {RouterLink} from 'vue-router'
+import router from '@/router';
+import PopUp from "./PopUp.vue";
+import { ref } from 'vue';
 
-    function goToGame() {
+    const popUpVisible = ref<boolean>(false)
+    let destination: string
+
+    function goTohome() {
+        destination = "/"
+        if (router.currentRoute.value.name == "game") {
+            popUpVisible.value = true
+        }
+        else {
+            redirect(true)
+        }
     }
+    
+    function goToScore() {
+        destination = "/score"
+        if (router.currentRoute.value.name == "game") {
+            popUpVisible.value = true
+        }
+        else {
+            redirect(true)
+        }
+    }
+
+    function redirect(confirmation:boolean) {
+        if (confirmation) {
+            router.push({path:destination})
+        }
+        popUpVisible.value = false
+    }
+
 </script>
 
 <template>
-    <RouterLink class="flex-grow-1" to="/">
-        <button class="w-100 button-color size">Accueil</button>
-    </RouterLink>
+    <div class="flex-grow-1">
+        <button class="w-100 button-color size" @click="goTohome">Accueil</button>
+    </div>
 
-    <RouterLink class="flex-grow-1" to="/game">
-        <button class="w-100 button-color size">Game</button>
-    </RouterLink>
+    <div class="flex-grow-1">
+        <button class="w-100 button-color size" @click="goToScore">Classement</button>
+    </div>
 
-    <RouterLink class="flex-grow-1" to="/score">
-        <button class="w-100 button-color size">Classement</button>
-    </RouterLink>
+    <PopUp v-if="popUpVisible" @redirect="redirect" />
 </template>
 
 <style>
