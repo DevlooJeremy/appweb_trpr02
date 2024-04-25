@@ -1,32 +1,17 @@
 export enum PlayerActions {FIGHT, RETREAT, REPARE, WAIT}
-export enum Ranks {BEGINER, CONFIRMED, EXPERT, MASTER}
 
-export function actionToString(action:PlayerActions) {
-    switch (action) {
-        case PlayerActions.FIGHT:
-            return "Fight"
-        case PlayerActions.RETREAT:
-            return "Retreat"
-        case PlayerActions.REPARE:
-            return "Repare"
-        case PlayerActions.WAIT:
-            return "Wait"
+export function getRankWithExperience(experience:number) {
+    switch (experience) {
+        case 1:
+            return "Débutant"
+        case 2:
+            return "Confirmé"
+        case 3:
+            return "Expert"
+        case 4:
+            return "Maitre"
+            
         default:
-            break;
-    }
-}
-
-export function stringToAction(stringAction:string) {
-    switch (stringAction) {
-        case "Fight":
-            return PlayerActions.FIGHT
-        case "Retreat":
-            return PlayerActions.RETREAT
-        case "Repare":
-            return PlayerActions.REPARE
-        case "Wait":
-            return PlayerActions.WAIT
-        default:
-            break;
+            return "Débutant"
     }
 }

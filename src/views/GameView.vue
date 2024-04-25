@@ -1,30 +1,49 @@
 <script setup lang="ts">
 
 import { ref } from 'vue'
-import { PlayerActions, Ranks, actionToString, stringToAction } from "../scripts/gameUtils";
+import { PlayerActions } from "../scripts/gameUtils";
 import Actions from "../components/Actions.vue";
 import Mission from "../components/Mission.vue";
 import Ship from "../components/Ship.vue";
 import Enemy from "../components/Enemy.vue";
+import { getCharacters } from '@/scripts/dbUtils';
 
 const props = defineProps({
   playerName: String,
   shipName: String
 })
 
-const action = ref<string>()
-const playerRank = ref<Ranks>(Ranks.MASTER)
-const enemyRank = ref<Ranks>()
+const currentMission = ref<number>(1)
+
+//Statistiques du joueur:
+const playerRank = ref<number>(4)
+const playerScore = ref<number>(0)
 const playerVitality = ref<number>(100)
 const playerMaxVitality = ref<number>(100)
-const enemyVitality = ref<number>(0)
-const enemyMaxVitality = ref<number>(0)
-const score = ref<number>(0)
+
+//Statistiques de l'ennemie:
+const enemyName = ref<string>("NavXD")
+const enemyShip = ref<string>("Vaisseau")
+const enemyRank = ref<number>(1)
+const enemyScore = ref<number>(0)
+const enemyVitality = ref<number>(100)
+const enemyMaxVitality = ref<number>(100)
+
+let enemyIsAlive: boolean;
+
+chooseEnemy()
 
 function update(recievedAction: PlayerActions){
     switch (recievedAction) {
         case PlayerActions.FIGHT:
-            fight()
+            if (enemyIsAlive)
+                fight()
+            break;
+        case PlayerActions.RETREAT:
+            retreat()
+            break;
+        case PlayerActions.REPARE:
+            repair()
             break;
     
         default:
@@ -36,22 +55,22 @@ function fight() {
     let playerAttack: number = getRndNbr(0, 100)
     let enemyAttack: number = getRndNbr(0, 100)
     switch (playerRank.value) {
-        case Ranks.BEGINER:
+        case 1:
             if (playerAttack < 20) {
                 damageEnemy()
             }
             break;
-        case Ranks.CONFIRMED:
+        case 2:
             if (playerAttack < 35) {
                 damageEnemy()
             }
             break;
-        case Ranks.EXPERT:
+        case 3:
             if (playerAttack < 50) {
                 damageEnemy()
             }
             break;
-        case Ranks.MASTER:
+        case 4:
             if (playerAttack < 70) {
                 damageEnemy()
             }
@@ -62,22 +81,22 @@ function fight() {
     }
 
     switch (enemyRank.value) {
-        case Ranks.BEGINER:
+        case 1:
             if (enemyAttack < 20) {
                 damagePlayer()
             }
             break;
-        case Ranks.CONFIRMED:
+        case 2:
             if (enemyAttack < 35) {
                 damagePlayer()
             }
             break;
-        case Ranks.EXPERT:
+        case 3:
             if (enemyAttack < 50) {
                 damagePlayer()
             }
             break;
-        case Ranks.MASTER:
+        case 4:
             if (enemyAttack < 70) {
                 damagePlayer()
             }
@@ -85,6 +104,17 @@ function fight() {
     
         default:
             break;
+    }
+
+    if (playerVitality.value <= 0) {
+        finishAndLoose()
+    }
+    else if (enemyVitality.value <= 0) {
+        enemyIsAlive = false
+        playerScore.value += enemyScore.value
+        if (currentMission.value == 5) {
+            finishAndWin()
+        }
     }
 }
 
@@ -94,26 +124,54 @@ function getRndNbr(min:number, max:number): number {
 
 function damagePlayer() {
     playerVitality.value -= (getRndNbr(3,6) * playerMaxVitality.value) / 100
+    if(playerVitality.value < 0)
+    playerVitality.value = 0
 }
 
 function damageEnemy() {
     enemyVitality.value -= (getRndNbr(3,6) * enemyMaxVitality.value) / 100
+    if(enemyVitality.value < 0)
+        enemyVitality.value = 0
 }
 
 function retreat() {
-
+    changeMission()
 }
 
 function repair() {
+    while (playerScore.value >= 5) {
+        playerVitality.value += (1*playerMaxVitality.value)/100
+        playerScore.value -= 5
+    }
+    changeMission()
+}
 
+function changeMission(){
+    currentMission.value++
+    chooseEnemy()
 }
 
 function chooseEnemy() {
+    getCharacters().then(function (response){
+        let nbrOfEnemy:number = response.length
+        let chosenEnemy:number = Math.floor(getRndNbr(0, nbrOfEnemy))
+        console.log(response)
+        enemyName.value = response[chosenEnemy].name
+        enemyShip.value = response[chosenEnemy].ship.name
+        enemyRank.value = response[chosenEnemy].experience
+        enemyScore.value = response[chosenEnemy].credit
+        enemyVitality.value = response[chosenEnemy].ship.vitality
+        enemyMaxVitality.value = enemyVitality.value
+    })
+    enemyIsAlive = true
+}
+
+function finishAndWin(){
 
 }
 
-function reset() {
-    action.value = "Wait"
+function finishAndLoose(){
+
 }
 
 </script>
@@ -122,11 +180,11 @@ function reset() {
     <div class="container">
         <div class="row my-4">
             <Actions class="col-6" @act="update"/>
-            <Mission class="col-5"/>
+            <Mission :currentMission="currentMission" class="col-5"/>
         </div>
         <div class="row">
-            <Ship :playerName="props.playerName" :shipName="props.shipName" class="col-5"/>
-            <Enemy class="col-5" :act="action" @reset="reset"/>
+            <Ship :playerName="props.playerName" :shipName="props.shipName" :vitality="playerVitality" :maxVitality="playerMaxVitality" :score="playerScore" class="col-5"/>
+            <Enemy class="col-5" :name="enemyName" :shipName="enemyShip" :rank="enemyRank" :score="enemyScore" :vitality="enemyVitality" :maxVitality="enemyMaxVitality"/>
         </div>
     </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   playerName: String,
@@ -9,17 +9,7 @@ const props = defineProps({
   score: Number
 })
 
-const vitalityValue = ref<number>(100)
-const maxVitalityValue = ref<number>(100)
-
-watch(props, () =>{
-    vitalityValue.value = props.vitality??100
-    maxVitalityValue.value = props.maxVitality??100
-});
-
-const vitalityPercentage = computed(() => (vitalityValue.value * 100) / maxVitalityValue.value)
-
-
+const vitalityPercentage = computed(() => ((props.vitality??100) * 100) / (props.maxVitality??100))
 
 </script>
 
@@ -31,7 +21,7 @@ const vitalityPercentage = computed(() => (vitalityValue.value * 100) / maxVital
         <div class="bg-dark p-4 rounded-bottom">
             <div>Maitre - {{ props.score }} CG</div>
             <div class="my-3">{{props.shipName??"Poubelle volante"}}</div>
-            <div class="bg-blue text-center rounded">{{vitalityPercentage}}%</div>
+            <div class="bg-blue text-center rounded">{{Math.ceil(vitalityPercentage)}}%</div>
         </div>
     </div>
     </template>
