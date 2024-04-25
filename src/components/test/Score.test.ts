@@ -4,8 +4,24 @@ import Score from '../Score.vue'
 
 describe('Score', () => {
 
-    it('l', async () => {  
-        const wrapper = mount(Score);
-        expect(wrapper.findAll('li').length).toBe(3);
+    it('Score can display rankings from array of rankings', async () => {  
+        const wrapper = mount(Score, {
+            propsData: {
+                Rankings: {
+                    data1: {
+                        id: 1,
+                        name: 'Hugo',
+                        score: 999
+                    },
+                    data2: {
+                        id: 2,
+                        name: 'Jeremy',
+                        score: 999
+                    }
+                }
+            }
+        });
+
+        expect(wrapper.findAll('li').length).toBe(2);
     })
 })
