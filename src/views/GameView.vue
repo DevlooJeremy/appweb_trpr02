@@ -4,8 +4,9 @@ import { ref } from 'vue'
 import { PlayerActions } from "../scripts/gameUtils";
 import Actions from "../components/Actions.vue";
 import Mission from "../components/Mission.vue";
-import Ship from "../components/Ship.vue";
+import Ship from "../components/Player.vue";
 import Enemy from "../components/Enemy.vue";
+import GeneralPopUp from "../components/GeneralPopUp.vue";
 import { getCharacters } from '@/scripts/dbUtils';
 import router from '@/router';
 
@@ -27,6 +28,11 @@ const enemyScore = ref<number>(0)
 const enemyVitality = ref<number>(100)
 const enemyMaxVitality = ref<number>(100)
 
+const showPopUp = ref<boolean>(false)
+const popUpMessage = ref<string>("Message")
+const win = ref<boolean>(false)
+const loose = ref<boolean>(false)
+
 let enemyIsAlive: boolean;
 
 if (router.currentRoute.value.query.playerName != null) {
@@ -39,20 +45,29 @@ if (router.currentRoute.value.query.ship != null) {
 chooseEnemy()
 
 function update(recievedAction: PlayerActions){
-    switch (recievedAction) {
-        case PlayerActions.FIGHT:
-            if (enemyIsAlive)
-                fight()
-            break;
-        case PlayerActions.RETREAT:
-            retreat()
-            break;
-        case PlayerActions.REPARE:
-            repair()
-            break;
-    
-        default:
-            break;
+    if (!win.value && !loose.value) {
+        switch (recievedAction) {
+            case PlayerActions.FIGHT:
+                if (enemyIsAlive)
+                    fight()
+                else
+                    sendPopUp("Ennemi déjà défait. Veuillez terminer la mission")
+                break;
+            case PlayerActions.RETREAT:
+                retreat()
+                break;
+            case PlayerActions.REPARE:
+                if (currentMission.value < 5) {
+                    repair()
+                }
+                else {
+                    sendPopUp("Inutile de réparer en finissant la dernière mission")
+                }
+                break;
+        
+            default:
+                break;
+        }
     }
 }
 
@@ -112,14 +127,12 @@ function fight() {
     }
 
     if (playerVitality.value <= 0) {
-        finishAndLoose()
+        sendPopUp("Vous avez perdu")
+        loose.value = true
     }
     else if (enemyVitality.value <= 0) {
         enemyIsAlive = false
         playerScore.value += enemyScore.value
-        if (currentMission.value == 5) {
-            finishAndWin()
-        }
     }
 }
 
@@ -152,6 +165,10 @@ function repair() {
 }
 
 function changeMission(){
+    if (currentMission.value == 5) {
+        win.value = true
+        sendPopUp("Victoire! Score: " + playerScore.value)
+    }
     currentMission.value++
     chooseEnemy()
 }
@@ -171,11 +188,27 @@ function chooseEnemy() {
 }
 
 function finishAndWin(){
-
+    router.push({path:"/score"})
 }
 
 function finishAndLoose(){
+    router.push({path:"/"})
 
+}
+
+function sendPopUp(message:string) {
+    popUpMessage.value = message
+    showPopUp.value = true
+}
+
+function hidePopUp() {
+    showPopUp.value = false
+    if (win.value) {
+        finishAndWin()
+    }
+    if (loose.value) {
+        finishAndLoose()
+    }
 }
 
 </script>
@@ -191,6 +224,8 @@ function finishAndLoose(){
             <Enemy class="col-5" :name="enemyName" :shipName="enemyShip" :rank="enemyRank" :score="enemyScore" :vitality="enemyVitality" :maxVitality="enemyMaxVitality"/>
         </div>
     </div>
+
+    <GeneralPopUp v-if="showPopUp" @read="hidePopUp" :message="popUpMessage"/>
 </template>
 
 <style>
