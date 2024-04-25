@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
-import {getRankings} from '../scripts/dbUtils'
 
-const rankings: any = ref<[]>([])
+const props = defineProps({
+    Rankings: Object
+})
 
-onMounted(() => {
-    getRankings().then((data)=> {
-        rankings.value = data;
-    });
-});
 </script>
 
 <template>
     <main class="d-flex justify-content-center align-items-center main-height">
         <div class="overflow-auto border border-3 border-dark leaderboard-size">
             <ul class="list-group-item text-size">
-                <li class="border-bottom border-2 border-dark d-flex" v-for="(ranking, index) of rankings">
+                <li class="border-bottom border-2 border-dark d-flex" v-for="(ranking, index) of Rankings">
                     <div class="">
                         {{ index + 1 + "•"}}
                     </div>
