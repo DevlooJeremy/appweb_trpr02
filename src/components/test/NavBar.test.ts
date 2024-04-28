@@ -1,36 +1,34 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import NavBar from '../NavBar.vue';
-import Home from '@/components/HomePage.vue'
-import Score from '@/components/Score.vue'
-import {createRouter, createWebHistory } from 'vue-router'
 
 describe('NavBar', () => {
   it('redirects to /score when score button is clicked', async () => {
-    const routes = [
-        { path: '/', component: Home},
-        { path: '/score', component: Score}
-    ];
-    
-    const router = createRouter({
-        history: createWebHistory(),
-        routes,
-    });
+    const mockRoute = {
+        params: {
+            id: 1
+        }
+    }
 
-    router.push('/');
-    await router.isReady();
+    const mockRouter = {
+        push: vi.fn()
+    }
 
     const wrapper = mount(NavBar, {
         global: {
-            plugins: [router],
-        },
-    });
+            mocks: {
+                $route: mockRoute,
+                $router: mockRouter
+            }
+        }
+    })
 
-    const routerLink = wrapper.findComponent({name: 'RouterLink', props: {to: '/score'}});
-    await routerLink.trigger('click');
-    await router.isReady();
+  const button = await wrapper.find('button')
+  button.trigger('click')
 
-    expect(router.push).
+
+    expect(mockRouter.push).toHaveBeenCalledTimes(1);
+    expect(mockRouter.push).toHaveBeenCalledWith('');
 
   })
 });

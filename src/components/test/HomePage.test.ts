@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import HomePage from '../HomePage.vue'
-import router from '@/router';
 
 describe('HomePage', () => {
     it('HomePage redirect to game if form is filled and submitted', async () => {
