@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {ref, onMounted} from 'vue'
 import {getShips} from '../scripts/dbUtils'
-import {} from 'vue-router';
-import { RouterLink } from 'vue-router';
 import router from '@/router';
 
 const playerName: any = defineModel("playerName");
