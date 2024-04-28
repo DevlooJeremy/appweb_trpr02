@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
-import PopUp from "./PopUp.vue";
+import RedirectionConfirmation from "./RedirectionConfirmation.vue";
 import { ref } from 'vue';
 
     const popUpVisible = ref<boolean>(false)
@@ -44,7 +44,7 @@ import { ref } from 'vue';
         <button name="scoreButton" class="w-100 button-color size" @click="goToScore">Classement</button>
     </div>
 
-    <PopUp v-if="popUpVisible" @redirect="redirect" />
+    <RedirectionConfirmation v-if="popUpVisible" @redirect="redirect" />
 </template>
 
 <style>
