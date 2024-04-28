@@ -9,6 +9,7 @@ const playerName: any = defineModel("playerName");
 const playerShip: any = defineModel("playerShip");
 const ships: any = ref<[]>([]);
 
+
 onMounted(() => {
     getShips().then((data) => {
         ships.value = data;
@@ -18,7 +19,7 @@ onMounted(() => {
 function onSubmit() {
     if (isNotBlank(playerName.value) && isNotBlank(playerShip.value))
     {
-        router.push({ path: 'game', query: {playerName: playerName.value, ship: playerShip.value}});
+        router.push({ path: '/game', query: {playerName: playerName.value, ship: playerShip.value}});
     }
 }
 
