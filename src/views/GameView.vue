@@ -7,7 +7,7 @@ import Mission from "../components/Mission.vue";
 import Ship from "../components/Player.vue";
 import Enemy from "../components/Enemy.vue";
 import GeneralPopUp from "../components/GeneralPopUp.vue";
-import { getCharacters } from '@/scripts/dbUtils';
+import { getCharacters, postRanking } from '@/scripts/dbUtils';
 import router from '@/router';
 
 const currentMission = ref<number>(1)
@@ -21,6 +21,7 @@ const playerVitality = ref<number>(100)
 const playerMaxVitality = ref<number>(100)
 
 //Statistiques de l'ennemie:
+const enemyId = ref<number>()
 const enemyName = ref<string>("NavXD")
 const enemyShip = ref<string>("Vaisseau")
 const enemyRank = ref<number>(1)
@@ -34,6 +35,7 @@ const win = ref<boolean>(false)
 const loose = ref<boolean>(false)
 
 let enemyIsAlive: boolean;
+let defeatedEnemies: number[] = [];
 
 if (router.currentRoute.value.query.playerName != null) {
     playerName.value = router.currentRoute.value.query.playerName as string
@@ -45,7 +47,7 @@ if (router.currentRoute.value.query.ship != null) {
 chooseEnemy()
 
 function update(recievedAction: PlayerActions){
-    if (!win.value && !loose.value) {
+    if (!showPopUp.value) {
         switch (recievedAction) {
             case PlayerActions.FIGHT:
                 if (enemyIsAlive)
@@ -132,6 +134,7 @@ function fight() {
     }
     else if (enemyVitality.value <= 0) {
         enemyIsAlive = false
+        sendPopUp("Vous avez obtenu " + enemyScore.value + " points")
         playerScore.value += enemyScore.value
     }
 }
@@ -169,14 +172,23 @@ function changeMission(){
         win.value = true
         sendPopUp("Victoire! Score: " + playerScore.value)
     }
-    currentMission.value++
+    else {
+        currentMission.value++
+    }
     chooseEnemy()
 }
 
 function chooseEnemy() {
+    if (enemyId.value != undefined) {
+        defeatedEnemies.push(enemyId.value)
+    }
     getCharacters().then(function (response){
         let nbrOfEnemy:number = response.length
         let chosenEnemy:number = Math.floor(getRndNbr(0, nbrOfEnemy))
+        while (defeatedEnemies.includes(response[chosenEnemy].id)) {
+            chosenEnemy = Math.floor(getRndNbr(0, nbrOfEnemy))
+        }
+        enemyId.value = response[chosenEnemy].id
         enemyName.value = response[chosenEnemy].name
         enemyShip.value = response[chosenEnemy].ship.name
         enemyRank.value = response[chosenEnemy].experience
@@ -188,7 +200,10 @@ function chooseEnemy() {
 }
 
 function finishAndWin(){
-    router.push({path:"/score"})
+    postRanking(playerName.value, playerScore.value)
+    setTimeout(() => {
+        router.push({path:"/score"})
+    }, 1000);
 }
 
 function finishAndLoose(){
