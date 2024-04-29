@@ -37,11 +37,11 @@ import { ref } from 'vue';
 
 <template>
     <div class="flex-grow-1">
-        <button class="w-100 button-color size" @click="goTohome">Accueil</button>
+        <button name="homeButton" class="w-100 button-color size" @click="goTohome">Accueil</button>
     </div>
 
     <div class="flex-grow-1">
-        <button class="w-100 button-color size" @click="goToScore">Classement</button>
+        <button name="scoreButton" class="w-100 button-color size" @click="goToScore">Classement</button>
     </div>
 
     <RedirectionConfirmation v-if="popUpVisible" @redirect="redirect" />
