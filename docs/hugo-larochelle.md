@@ -16,43 +16,19 @@ Les noms des composantes ainsi que ceux des fonctions et des variables sont clai
 
 ### Bonnes pratiques
 
-Une fonction dans le composant *NavBar* est vide et inutilisé
-
-```js{5,6}
-// src/components/NavBar.vue
-<script setup lang="ts">
-    import {RouterLink} from 'vue-router'
-
-    function goToGame() {
-    }
-</script>
-```
-
-Deux *imports* inutiles.
-
-```js{5,6}
-// src/components/NavBar.vue
-<script setup lang="ts">
-import {ref, onMounted} from 'vue'
-import {getShips} from '../scripts/dbUtils'
-import {} from 'vue-router';
-import { RouterLink } from 'vue-router';
-import router from '@/router';
-
-...
-
-</script>
-```
-
-Pour le reste la quantité de code est gardé à son minimum (pas de fonctions trop longues).
+Le code respect bien les bonnes pratiques.
 
 ### Normes et standards
 
-Les normes et standards sont bien respectés. Bravo!
+Les normes et standards sont bien respectés.
 
 ## Tests
 
-***Encore non présent***
+Seul un test est présent pour *HomePage* qui vérifie si le formulaire peut être envoyé. Il pourrait y en avoir pour lorsqu'un champ est invalide.
+
+Dans le même genre, seul la redirection vers le classement est testé et non vers l'acceuil, ni lorsque la redirection est demandé depuis une partie.
+
+Pour ce qui est des tests pour le classement (*Score*), tout est correct.
 
 ## Autres
 
